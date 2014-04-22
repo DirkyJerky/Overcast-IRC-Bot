@@ -16,8 +16,7 @@ class function(function_template):
         error = ''
         nonTranslated = ''
         if len(message) > 1:
-            for i in range(1, len(message)):
-                nonTranslated = nonTranslated + ' ' + message[i]
+            nonTranslated = "".join(msg_data["message"][2:])
         else:
             error = 'Syntax: !translate <lang> <message...>'
         if not(error):
@@ -28,7 +27,7 @@ class function(function_template):
             else:
                 jsonObj = json.loads(r.text)
                 translated = jsonObj["responseData"]["translatedText"]
-                bot._irc.sendMSG("\"" + str(translated) + "\"" % (player), msg_data["target"])
+                bot._irc.sendMSG("\"" + str(translated) + "\"", msg_data["target"])
 
 
         if error: bot._irc.sendMSG(error, msg_data["target"])
