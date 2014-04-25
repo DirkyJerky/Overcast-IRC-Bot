@@ -6,14 +6,14 @@ import re
 
 import logging
 log = logging.getLogger('bot')
+syntax = 'Syntax: !translate <lang> <message...>'
+langList = "www.i18nguy.com/unicode/language-identifiers.html"
 
 class function(function_template):
-    syntax = 'Syntax: !translate <lang> <message...>'
-    langList = "www.i18nguy.com/unicode/language-identifiers.html"
     def __init__(self):
         function_template.__init__(self)
         self.commands = ["translate", "trans"]
-        self.function_string = "Translate a string. Syntax: '!translate <lang> <message...>'\nExample Languages: 'es' = Spanish, 'es-US' = US Spanish, etc. List: " + self.langList
+        self.function_string = "Translate a string. Syntax: '!translate <lang> <message...>'\nExample Languages: 'es' = Spanish, 'es-US' = US Spanish, etc. List: " + langList
 
     def main(self, bot, msg_data, func_type):
         message = msg_data["message"]
@@ -22,7 +22,7 @@ class function(function_template):
             nonTranslated = " ".join(msg_data["message"][2:])
             unsafeCharString = "@#$%^&+=,/:;?\'\"<>{}|\\~[]`"
             # Remove the unsafe chars
-            for unsafeChar in unsafeCharString:
+            for unsafeChar in list(unsafeCharString):
                 nonTranslated.replace(unsafeChar, ' ')
             nonTranslated = re.sub(" +", " ", nonTranslated)
             # Eliminate multiple spaces
