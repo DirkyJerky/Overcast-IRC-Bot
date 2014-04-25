@@ -34,18 +34,20 @@ class function(function_template):
                 else:
                     jsonObj = json.loads(r.text)
                     translated = jsonObj["responseData"]["translatedText"]
-                    status = jsonObj["responseStatus"]
-                    if status != 200:
-                        if "PLEASE SELECT TWO DISTINCT LANGUAGES" in translated:
+                    statusCode = jsonObj["responseStatus"]
+                    statusMsg = jsonObj["responseDetails"]
+                    if statusCode != 200:
+                        if "PLEASE SELECT TWO DISTINCT LANGUAGES" in statusMsg:
                             error = 'Please use a non english language'
-                        if "NO QUERY SPECIFIED" in translated:
+                        if "NO QUERY SPECIFIED" in statusMsg:
                             error = syntax
-                        if "INVALID SOURCE LANGUAGE" in translated:
+                        if "INVALID SOURCE LANGUAGE" in statusMsg:
                             error = "\"" + lang + "\" is not a valid language. List: " + langList
                         if not(error):
                             error = "Unknown error when translating. See console"
                             log.info('"' + translated + '" for "' + nonTranslated + '" with lang: ' + lang)
                     else:
+                        translated = translated.encode('utf-8')
                         bot._irc.sendMSG("\"" + str(translated) + "\"", msg_data["target"])
         else:
             error = syntax
