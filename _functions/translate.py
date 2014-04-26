@@ -19,6 +19,7 @@ class function(function_template):
         message = msg_data["message"]
         error = ''
         if len(message) > 2:
+            lang = message[1]
             nonTranslated = " ".join(msg_data["message"][2:])
             unsafeCharString = "@#$%^&+=,/:;?\'\"<>{}|\\~[]`"
             # Remove the unsafe chars
